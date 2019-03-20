@@ -1,0 +1,33 @@
+<html>
+    <head>
+        {% if title%}
+        <title>{{title}} - Мой сайт</title>>
+        {% else %}
+        <title>Добро пожаловать на Мой сайт</title>>
+        {% endif %}
+    </head>>
+    <body>
+    <div>
+        Мой сайт:
+        <a href="{{ url_for('index') }}">Домой</a>
+        {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Войти</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}">Выйти</a>
+        <a href="{{ url_for('new_post') }}">Новое сообщение</a>
+        {% endif %}
+    </div>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <hr>
+    {% block content%}{%endblock%}
+    </body>>
+</html>>
