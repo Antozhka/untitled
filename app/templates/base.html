@@ -1,4 +1,4 @@
-<html>
+<!--<html>
     <head>
         {% if title%}
         <title>{{title}} - Мой сайт</title>>
@@ -30,4 +30,52 @@
     <hr>
     {% block content%}{%endblock%}
     </body>>
-</html>>
+</html>>-->
+
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+{% if title %}<title>{{title}} - Мой сайт</title>{% else %}<title>Добро пожаловать на Мой сайт</title>{% endif %}
+{% end block title%}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Мой блог</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{{ url_for('index') }}">Домой <span class="sr-only">(current)</span></a></li>
+                    {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('login') }}">Войти</a></li>
+                    {% else %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Мой профиль <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('user', username=current_user.username) }}">{{ current_user.username }}</a></li>
+                            <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ url_for('new_post') }}">Новое сообщение</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+
+
