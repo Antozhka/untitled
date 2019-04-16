@@ -16,9 +16,8 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg.body = text_body
     msg.html = html_body
     #send_async_email.delay(msg)
-    #mail.send(msg)
-    Thread(target=send_async_email,
-           args=(current_app._get_current_object(), msg)).start()
+    mail.send(msg)
+    #Thread(target=send_async_email, args=(current_app._get_current_object(), msg)).start()
 
 def send_password_reset_email(user):
     token = user.get_reset_password_token()

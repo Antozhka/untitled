@@ -1,0 +1,23 @@
+{% extends "base_bs.html" %}
+
+{% block content %}
+    <h1>Привет, {{ current_user.username }}!</h1>
+    <h1>Новое сообщение</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.body(cols=32, rows=4) }}<br>
+            {% for error in form.body.errors %}
+            <span style="color: red;">[{{ ошибка }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    {% for post in posts %}
+    <div><p><a href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a>
+        в {{post.timestamp}} сказал: <b>{{ post.body }}</b></p></div>
+    {% endfor %}
+    {% if prev_url %}<a href="{{ prev_url }}">Новые сообщения</a>{% endif %}
+    {% if next_url %}<a href="{{ next_url }}">Старые сообщения</a>{% endif %}
+{% endblock %}
+

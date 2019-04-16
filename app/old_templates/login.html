@@ -7,37 +7,19 @@
             {{ form.username.label }}<br>
             {{ form.username(size=32) }}
             {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span style="color: red;">[{{ ошибка }}]</span>
             {% endfor %}
         </p>
         <p>
             {{ form.password.label }}<br>
             {{ form.password(size=32) }}
             {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span style="color: red;">[{{ ошибка }}]</span>
             {% endfor %}
         </p>
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
     </form>
-    <p>
-    Forgot Your Password?
-    <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
-    </p>
+    <p>Забыл пароль? <a href="{{ url_for('reset_password_request') }}">Жми чтобы сменить пароль</a></p>
     <p>Новый пользователь? <a href="{{ url_for('register') }}">Пройи регистрацию!</a></p>
 {% endblock %}
-
-<!--{% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
-
-{% block app_content %}
-    <h1>Войти</h1>
-    <div class="row">
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
-        </div>
-    </div>
-    <br>
-    <p>Забыл пароль? <a href="{{ url_for('reset_password_request') }}">Жми чтобы сменить пароль</a></p>
-    <p>Новый пользователь? <a href="{{ url_for('register') }}">Пройти регистрацию!</a></p>
-{% endblock %}-->

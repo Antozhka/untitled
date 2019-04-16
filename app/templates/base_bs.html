@@ -1,42 +1,8 @@
-<html>
-    <head>
-        {% if title%}
-        <title>{{title}} - Мой сайт</title>
-        {% else %}
-        <title>Добро пожаловать на Мой сайт</title>
-        {% endif %}
-    </head>
-    <body>
-    <div>
-        Мой сайт:
-        <a href="{{ url_for('index') }}">Домой</a>
-        {% if current_user.is_anonymous %}
-        <a href="{{ url_for('login') }}">Войти</a>
-        {% else %}
-        <a href="{{ url_for('logout') }}">Выйти</a>
-        <a href="{{ url_for('new_post') }}">Новое сообщение</a>
-        {% endif %}
-    </div>
-    <hr>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-    {% for message in messages %}
-        <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    <hr>
-    {% block content %}{% endblock %}
-    </body>
-</html>
-
-<!--{% extends 'bootstrap/base.html' %}
+{% extends 'bootstrap/base.html' %}
 
 {% block title %}
-{% if title %}<title>{{title}} - Мой сайт</title>{% else %}<title>Добро пожаловать на Мой сайт</title>{% endif %}
-{% end block title%}
+{% if title %}{{title}} - Мой сайт{% else %}Добро пожаловать на Мой сайт{% endif %}
+{% endblock title%}
 
 {% block navbar %}
     <nav class="navbar navbar-default">
@@ -63,7 +29,6 @@
                             <li><a href="{{ url_for('logout') }}">Выйти</a></li>
                         </ul>
                     </li>
-                    <li><a href="{{ url_for('new_post') }}">Новое сообщение</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -73,9 +38,13 @@
 
 {% block content %}
     <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
         {% block app_content %}{% endblock %}
     </div>
-{% endblock %}-->
-
-
-
+{% endblock %}

@@ -26,11 +26,9 @@ def index():
         return redirect(url_for('index'))
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('index', page=posts.next_num) \
-        if posts.has_next else None
-    prev_url = url_for('index', page=posts.prev_num) \
-        if posts.has_prev else None
-    return render_template('index.html', title='Главная страница', form=form,
+    next_url = url_for('index', page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('index', page=posts.prev_num) if posts.has_prev else None
+    return render_template('index_bs.html', title='Главная страница', form=form,
                            posts=posts.items, next_url=next_url,
                            prev_url=prev_url)
 
@@ -49,7 +47,7 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
-    return render_template('login.html', title='Вход', form=form)
+    return render_template('login_bs.html', title='Вход', form=form)
 
 @app.route('/logout')
 def logout():
@@ -68,13 +66,13 @@ def register():
         db.session.commit()
         flash('Поздравляем, Вы наш новый пользователь!')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Регистрация', form=form)
+    return render_template('register_bs.html', title='Регистрация', form=form)
 
 @app.route('/user/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user)
+    return render_template('user_bs.html', title=user.username, user=user)
 
 
 @app.before_request
@@ -93,11 +91,11 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Изменения сохранены')
-        return redirect(url_for('edit_profile'))
+        return redirect(url_for('user', username=current_user.username))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile',  form=form)
+    return render_template('edit_profile_bs.html', title='Редактировать профиль',  form=form)
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
@@ -110,8 +108,7 @@ def reset_password_request():
             send_password_reset_email(user)
         flash('Письмо с инструкциями по восстановлению пароля отправлена на email')
         return redirect(url_for('login'))
-    return render_template('reset_password_request.html',
-                           title='Reset Password', form=form)
+    return render_template('reset_password_request_bs.html', title='Смена пароля', form=form)
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -124,6 +121,6 @@ def reset_password(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset.')
+        flash('Пароль изменен')
         return redirect(url_for('login'))
-    return render_template('reset_password.html', form=form)
+    return render_template('reset_password_bs.html', form=form)
